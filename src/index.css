@@ -224,3 +224,24 @@ h2 { font-size: clamp(1.8rem, 4vw, 2.6rem); color: var(--g8); line-height: 1.2; 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
 }
+/* flag card: the logo is the flag */
+.flagcard { display: grid; grid-template-columns: auto 1fr; gap: 36px; align-items: center; background: #fff; border-radius: 28px; padding: 32px; box-shadow: var(--shadow-lg); border-bottom: 8px solid #e0262d; }
+.flagimg { width: clamp(150px, 26vw, 260px); height: auto; border-radius: 16px; box-shadow: var(--shadow-lg); transform-origin: 50% 100%; animation: wave 5s ease-in-out infinite; }
+.flagcard h3 { color: var(--g8); font-size: clamp(1.4rem, 3vw, 2rem); }
+.flagcard p { color: var(--muted); margin-top: 8px; font-size: 1.05rem; }
+@keyframes wave { 0%, 100% { transform: rotate(-2deg) translateY(0); } 50% { transform: rotate(2deg) translateY(-10px); } }
+@media (max-width: 640px) { .flagcard { grid-template-columns: 1fr; text-align: center; justify-items: center; padding: 24px; } }
+
+/* stripe colours matched to the logo (approximate) */
+.flagbar { background: linear-gradient(90deg, #3aa655 0 33.34%, #ffffff 33.34% 66.67%, #5bbcea 66.67% 100%); border-bottom-color: #e0262d; }
+
+/* inner page headers: small flag and tricolour stripe */
+.pagehead { padding: 64px 0 0; text-align: left; }
+.pagehead-in { display: flex; align-items: center; justify-content: space-between; gap: 24px; padding-bottom: 56px; }
+.pagehead p { margin: 10px 0 0; }
+.pageflag { width: clamp(72px, 14vw, 120px); height: auto; flex: none; border-radius: 10px; box-shadow: 0 10px 30px rgba(0, 0, 0, .35); transform-origin: 50% 100%; animation: wave 5s ease-in-out infinite; }
+.tricolour { height: 10px; background: linear-gradient(90deg, #3aa655 0 33.34%, #ffffff 33.34% 66.67%, #5bbcea 66.67% 100%); border-bottom: 4px solid #e0262d; }
+@keyframes wave { 0%, 100% { transform: rotate(-2deg) translateY(0); } 50% { transform: rotate(2deg) translateY(-10px); } }
+@media (max-width: 520px) {
+  .pagehead-in { flex-direction: column-reverse; text-align: center; gap: 16px; }
+}

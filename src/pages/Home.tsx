@@ -7,6 +7,7 @@ import { Reveal, Words } from '../components/Reveal'
 import { categories, projects } from '../data/projects'
 import { tone } from '../data/palette'
 import Marquee from '../components/Marquee'
+import FlagBanner from '../components/FlagBanner'
 const works = categories.filter((c) => c.id !== 'legislation')
 
 export default function Home() {
@@ -15,6 +16,7 @@ export default function Home() {
       <Hero />
       <RecordStrip />
       <Marquee />
+      <FlagBanner />
 
       <section className="section">
         <div className="container">
