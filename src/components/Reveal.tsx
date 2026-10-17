@@ -1,75 +1,41 @@
-import { createElement, Fragment, useEffect, useState } from 'react'
+import { motion } from 'framer-motion'
 import type { CSSProperties, ReactNode } from 'react'
 
-// People who asked their device for less motion, or very old browsers, just see everything at once.
-const still =
-  typeof window === 'undefined' ||
-  !('IntersectionObserver' in window) ||
-  window.matchMedia('(prefers-reduced-motion: reduce)').matches
-
-// The "js" class tells the CSS it is safe to hide things until they scroll into view.
-if (!still) document.documentElement.classList.add('js')
-
-function useSeen(): [(el: Element | null) => void, boolean] {
-  const [el, setEl] = useState<Element | null>(null)
-  const [seen, setSeen] = useState(still)
-  useEffect(() => {
-    if (seen || !el) return
-    const io = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setSeen(true)
-          io.disconnect()
-        }
-      },
-      { threshold: 0.12, rootMargin: '0px 0px -6% 0px' },
-    )
-    io.observe(el)
-    return () => io.disconnect()
-  }, [el, seen])
-  return [setEl, seen]
-}
-
-type BlockTag = 'div' | 'article' | 'figure'
-
-/** A block that rises into place when it scrolls into view. */
-export function Reveal({
-  as = 'div',
-  className = '',
-  delay = 0,
-  children,
-}: {
-  as?: BlockTag
-  className?: string
-  delay?: number
-  children: ReactNode
+export function Reveal({ children, className, delay = 0, style }: {
+  children: ReactNode; className?: string; delay?: number; style?: CSSProperties
 }) {
-  const [ref, seen] = useSeen()
-  return createElement(
-    as,
-    { ref, className: `rv ${seen ? 'in' : ''} ${className}`, style: { '--d': `${delay}ms` } as CSSProperties },
-    children,
+  return (
+    <motion.div
+      className={className}
+      style={style}
+      initial={{ opacity: 0, y: 44 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.15 }}
+      transition={{ duration: 0.7, delay: delay / 1000, ease: [0.22, 1, 0.36, 1] }}
+    >
+      {children}
+    </motion.div>
   )
 }
 
-/** Text that comes in word by word when it scrolls into view. */
-export function Words({
-  text,
-  as = 'p',
-  className = '',
-}: {
-  text: string
-  as?: 'h2' | 'p'
-  className?: string
+export function Words({ text, as = 'p', className }: {
+  text: string; as?: 'h1' | 'h2' | 'h3' | 'p'; className?: string
 }) {
-  const [ref, seen] = useSeen()
-  return createElement(
-    as,
-    { ref, className: `words ${seen ? 'in' : ''} ${className}` },
-    text.split(' ').map((w, i) => (
-      <Fragment key={i}>
-        <span className="w" style={{ '--i': i } as CSSProperties}>{w}</span>{' '}
-      </Fragment>
-    )),
+  const Tag = as
+  return (
+    <Tag className={className}>
+      {text.split(' ').map((w, i) => (
+        <motion.span
+          key={i}
+          style={{ display: 'inline-block', marginRight: '0.28em' }}
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.8 }}
+          transition={{ duration: 0.5, delay: i * 0.04 }}
+        >
+          {w}
+        </motion.span>
+      ))}
+    </Tag>
   )
 }
